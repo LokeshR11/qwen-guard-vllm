@@ -1,3 +1,5 @@
+ATTENTION: This email came from an external source. Do not open attachments or click on links from unknown senders or unexpected emails. Always report suspicious emails using the Report As Phishing button in Outlook to protect the Bank and our clients.
+
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
@@ -9,14 +11,12 @@ metadata:
   labels:
     scenarios.ai.sap.com/id: "qwen-guard-vllm"
     ai.sap.com/version: "1.0.0"
-
 spec:
   inputs:
     parameters: []
     artifacts: []
-
   template:
-    apiVersion: serving.kserve.io/v1beta1
+    apiVersion: "serving.kserve.io/v1beta1"
     metadata:
       annotations:
         autoscaling.knative.dev/metric: concurrency
@@ -24,15 +24,14 @@ spec:
         autoscaling.knative.dev/targetBurstCapacity: "0"
       labels:
         ai.sap.com/resourcePlan: infer.l
-
     spec:
       predictor:
         imagePullSecrets:
           - name: docker-registry-secret
-
         containers:
-          - name: qwen-vllm
+          - name: kserve-container
             image: docker.io/lokeshr11/qwen-guard-vllm:latest
             ports:
               - containerPort: 8000
                 protocol: TCP
+
