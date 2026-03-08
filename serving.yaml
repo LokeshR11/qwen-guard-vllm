@@ -28,7 +28,7 @@ spec:
     spec:
       predictor:
         imagePullSecrets:
-          - name: YOUR-DOCKER-SECRET
+          - name: docker-registry-secret
 
         containers:
           - name: qwen-vllm
