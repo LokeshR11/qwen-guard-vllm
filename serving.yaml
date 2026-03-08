@@ -1,0 +1,41 @@
+apiVersion: ai.sap.com/v1alpha1
+kind: ServingTemplate
+metadata:
+  name: qwen-guard-vllm
+  annotations:
+    scenarios.ai.sap.com/description: "Qwen3 Guard vLLM Server"
+    scenarios.ai.sap.com/name: "qwen-guard-vllm"
+    servingtemplate.ai.sap.com/name: "qwen-guard-vllm"
+  labels:
+    scenarios.ai.sap.com/id: "qwen-guard-vllm"
+    ai.sap.com/version: "1.0.0"
+spec:
+  inputs:
+    parameters: []
+    artifacts: []
+  template:
+    apiVersion: "serving.kserve.io/v1beta1"
+    metadata:
+      annotations:
+        autoscaling.knative.dev/metric: concurrency
+        autoscaling.knative.dev/target: "1"
+        autoscaling.knative.dev/targetBurstCapacity: "0"
+      labels:
+        ai.sap.com/resourcePlan: infer.l  # GPU node
+    spec:
+      predictor:
+        imagePullSecrets:
+          - name: YOUR-DOCKER-SECRET   # ← your Docker Hub secret in AI Core
+        containers:
+          - name: kserve-container
+            image: lokeshr11/qwen-guard-vllm:latest
+            ports:
+              - containerPort: 8000
+                protocol: TCP
+            command: ["python", "-m", "vllm.entrypoints.openai.api_server"]
+            args:
+              - "--model"
+              - "Qwen/Qwen3-Guard-8B"
+              - "--port"
+              - "8000"
+              - "--trust-remote-code"
