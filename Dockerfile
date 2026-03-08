@@ -2,6 +2,7 @@ FROM vllm/vllm-openai:latest
 
 WORKDIR /app
 
-COPY start.sh .
-
-CMD ["bash","start.sh"]
+CMD python -m vllm.entrypoints.openai.api_server \
+    --model Qwen/Qwen3-Guard-8B \
+    --port 8000 \
+    --trust-remote-code
