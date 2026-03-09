@@ -1,4 +1,4 @@
-FROM vllm/vllm-openai:latest-cpu
+FROM openeuler/vllm-cpu:latest
 WORKDIR /app
 
 # Bypass SAP security/tmp restrictions
