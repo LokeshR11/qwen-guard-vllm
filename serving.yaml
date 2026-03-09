@@ -24,14 +24,14 @@ spec:
       labels: |
         ai.sap.com/resourcePlan: infer.s
     spec: |
-          predictor:
-            imagePullSecrets:
-              - name: docker-registry-secret
-            minReplicas: 1
-            maxReplicas: 1
-            containers:
-              - name: kserve-container
-                image: docker.io/lokeshr11/qwen-guard-vllm:latest
-                ports:
-                  - containerPort: 8000
-                    protocol: TCP
+      predictor:
+        imagePullSecrets:
+          - name: docker-registry-secret
+        minReplicas: 1
+        maxReplicas: 1
+        containers:
+          - name: kserve-container
+            image: docker.io/lokeshr11/qwen-guard-vllm:latest
+            ports:
+              - containerPort: 8000
+                protocol: TCP
