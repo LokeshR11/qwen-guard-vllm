@@ -19,10 +19,10 @@ spec:
     metadata:
       annotations: |
         autoscaling.knative.dev/metric: concurrency
-        autoscaling.knative.dev/target: 1
-        autoscaling.knative.dev/targetBurstCapacity: 0
+        autoscaling.knative.dev/target: "1"
+        autoscaling.knative.dev/targetBurstCapacity: "0"
       labels: |
-        ai.sap.com/resourcePlan: infer.l
+        ai.sap.com/resourcePlan: infer.s
     spec: |
       predictor:
         imagePullSecrets:
