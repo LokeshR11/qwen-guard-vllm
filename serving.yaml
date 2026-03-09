@@ -1,4 +1,3 @@
-
 apiVersion: ai.sap.com/v1alpha1
 kind: ServingTemplate
 metadata:
@@ -6,10 +5,11 @@ metadata:
   annotations:
     scenarios.ai.sap.com/description: "Qwen3 Guard vLLM Server"
     scenarios.ai.sap.com/name: "qwen-guard-vllm"
-    servingtemplate.ai.sap.com/name: "qwen-guard-vllm"
+    executables.ai.sap.com/description: "Qwen3 Guard vLLM inference"
+    executables.ai.sap.com/name: "qwen-guard-vllm"
   labels:
     scenarios.ai.sap.com/id: "qwen-guard-vllm"
-    ai.sap.com/version: "1.0.0"
+    ai.sap.com/version: "0.0.1"
 spec:
   inputs:
     parameters: []
@@ -17,20 +17,21 @@ spec:
   template:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
-      annotations:
+      annotations: |
         autoscaling.knative.dev/metric: concurrency
         autoscaling.knative.dev/target: "1"
         autoscaling.knative.dev/targetBurstCapacity: "0"
-      labels:
+      labels: |
         ai.sap.com/resourcePlan: infer.s
-    spec:
+    spec: |
       predictor:
         imagePullSecrets:
           - name: docker-registry-secret
+        minReplicas: 1
+        maxReplicas: 1
         containers:
           - name: kserve-container
             image: docker.io/lokeshr11/qwen-guard-vllm:latest
             ports:
               - containerPort: 8000
                 protocol: TCP
-
