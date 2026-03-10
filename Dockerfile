@@ -16,12 +16,11 @@ RUN huggingface-cli download Qwen/Qwen3Guard-Gen-0.6B \
 # Permissions for SAP restricted user
 RUN chmod -R 777 /app/models
 
-CMD ["python", "-m", "vllm.entrypoints.openai.api_server", \
-     "--model", "/app/models/Qwen3Guard-Gen-0.6B", \
-     "--port", "8000", \
-     "--host", "0.0.0.0", \
-     "--trust-remote-code", \
-     "--max-model-len", "2048", \
-     "--dtype", "float32", \
-     "--enforce-eager", \
-     "--disable-log-requests"]
+# Copy and prepare startup script
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+EXPOSE 8000
+
+# ENTRYPOINT instead of CMD — KServe cannot override this
+ENTRYPOINT ["/app/start.sh"]
