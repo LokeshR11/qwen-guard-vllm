@@ -1,6 +1,7 @@
-FROM vllm/vllm-openai:latest   
+FROM openeuler/vllm-cpu:latest
+WORKDIR /app
 
-
+# Bypass SAP security/tmp restrictions
 ENV VLLM_CONFIG_ROOT=/tmp
 ENV XDG_CACHE_HOME=/tmp
 ENV HF_HOME=/tmp
