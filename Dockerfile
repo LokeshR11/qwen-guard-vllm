@@ -1,7 +1,6 @@
-FROM openeuler/vllm-cpu:latest
-WORKDIR /app
+FROM vllm/vllm-openai:latest   
 
-# Bypass SAP security/tmp restrictions
+
 ENV VLLM_CONFIG_ROOT=/tmp
 ENV XDG_CACHE_HOME=/tmp
 ENV HF_HOME=/tmp
@@ -16,9 +15,12 @@ RUN huggingface-cli download Qwen/Qwen3Guard-Gen-0.6B \
 # Permissions for SAP restricted user
 RUN chmod -R 777 /app/models
 
-CMD ["--model", "/app/models/Qwen3Guard-Gen-0.6B", \
+CMD ["python", "-m", "vllm.entrypoints.openai.api_server", \
+     "--model", "/app/models/Qwen3Guard-Gen-0.6B", \
      "--port", "8000", \
      "--host", "0.0.0.0", \
      "--trust-remote-code", \
      "--max-model-len", "2048", \
-     "--device", "cpu"]
+     "--dtype", "float32", \
+     "--enforce-eager", \
+     "--disable-log-requests"]
